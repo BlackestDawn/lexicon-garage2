@@ -58,15 +58,17 @@ Extensions/StringBuilderExtensions.cs
 Helpers/EnumHelpers.cs
 Models/
  Data/TestData.cs
- Engines.cs
  Enums.cs
  FuelTypes.cs
- Interfaces/UI.cs
+ Interfaces/
+  Engine.cs
+  IUI.cs
  Vehicles/
   Airplane.cs
   Boat.cs
   Bus.cs
   Car.cs
+  Engines.cs
   Motorcycle.cs
   Vehicle.cs
 obj/Debug/net10.0/

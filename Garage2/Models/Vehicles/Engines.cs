@@ -1,10 +1,6 @@
-namespace Garage2.Models;
+using Garage2.Models.Interfaces;
 
-public interface IEngine
-{
-    int MaxPowerHP { get; }
-    string Description { get; }
-}
+namespace Garage2.Models.Vehicles;
 
 public readonly struct FuelEngine(int maxPowerHP, decimal displacementLiters, FuelTypes fuelType) : IEngine
 {
