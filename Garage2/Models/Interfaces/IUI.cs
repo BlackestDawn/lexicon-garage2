@@ -1,8 +1,8 @@
 using Garage2.Models.Vehicles;
 
-namespace Garage2.Models;
+namespace Garage2.Models.Interfaces;
 
-public interface IUIInterface
+public interface IUI
 {
     public MainMenuOptions MainMenuWindow();
     public Vehicle VehicleListSelectionWindow(Vehicle[] vehicles);

@@ -61,7 +61,7 @@ Models/
  Engines.cs
  Enums.cs
  FuelTypes.cs
- UIInterface.cs
+ Interfaces/UI.cs
  Vehicles/
   Airplane.cs
   Boat.cs

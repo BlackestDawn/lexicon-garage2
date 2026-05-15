@@ -1,5 +1,6 @@
 using Garage2.Models;
 using Garage2.Models.Data;
+using Garage2.Models.Interfaces;
 using Garage2.Models.Vehicles;
 using Spectre.Console;
 
@@ -8,7 +9,7 @@ namespace Garage2.Services;
 public class ManagementApp
 {
     private readonly Garage _garage;
-    private readonly IUIInterface _ui;
+    private readonly IUI _ui;
 
     public ManagementApp()
     {

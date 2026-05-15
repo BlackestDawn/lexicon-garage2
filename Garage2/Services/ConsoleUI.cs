@@ -3,12 +3,13 @@ using System.Text;
 using Garage2.Extensions;
 using Garage2.Helpers;
 using Garage2.Models;
+using Garage2.Models.Interfaces;
 using Garage2.Models.Vehicles;
 using Spectre.Console;
 
 namespace Garage2.Services;
 
-public class ConsoleUI: IUIInterface
+public class ConsoleUI: IUI
 {
     private readonly Func<Hashtable> _usageStatus;
     private readonly Stack _menuPath = new(5);
