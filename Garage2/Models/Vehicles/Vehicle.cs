@@ -4,7 +4,7 @@ using Garage2.Models.Interfaces;
 
 namespace Garage2.Models.Vehicles;
 
-public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, int numWheels, string color)
+public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, int numWheels, string color) : IPrintable
 {
     private readonly VehicleTypes _vehicleType = vehicleType;
     public VehicleTypes VehicleType
