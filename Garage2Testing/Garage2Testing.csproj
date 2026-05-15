@@ -15,6 +15,6 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ovn4_Collections\Ovn4_Collections.csproj" />
+    <ProjectReference Include="..\Garage2\Garage2.csproj" />
   </ItemGroup>
 </Project>

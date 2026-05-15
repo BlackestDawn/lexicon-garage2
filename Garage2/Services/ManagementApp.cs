@@ -1,9 +1,9 @@
-using Ovn4_Collections.Models;
-using Ovn4_Collections.Models.Data;
-using Ovn4_Collections.Models.Vehicles;
+using Garage2.Models;
+using Garage2.Models.Data;
+using Garage2.Models.Vehicles;
 using Spectre.Console;
 
-namespace Ovn4_Collections.Services;
+namespace Garage2.Services;
 
 public class ManagementApp
 {

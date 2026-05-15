@@ -1,8 +1,8 @@
 using System.Collections;
-using Ovn4_Collections.Models;
-using Ovn4_Collections.Models.Vehicles;
+using Garage2.Models;
+using Garage2.Models.Vehicles;
 
-namespace Ovn4_Collections.Services;
+namespace Garage2.Services;
 
 public class Garage
 {

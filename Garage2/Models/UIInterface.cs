@@ -1,6 +1,6 @@
-using Ovn4_Collections.Models.Vehicles;
+using Garage2.Models.Vehicles;
 
-namespace Ovn4_Collections.Models;
+namespace Garage2.Models;
 
 public interface IUIInterface
 {

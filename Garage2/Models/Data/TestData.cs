@@ -1,6 +1,6 @@
-using Ovn4_Collections.Models.Vehicles;
+using Garage2.Models.Vehicles;
 
-namespace Ovn4_Collections.Models.Data;
+namespace Garage2.Models.Data;
 
 public static class TestData
 {

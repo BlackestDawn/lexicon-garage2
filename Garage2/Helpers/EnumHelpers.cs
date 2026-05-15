@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Ovn4_Collections.Helpers;
+namespace Garage2.Helpers;
 
 public static class EnumHelpers
 {

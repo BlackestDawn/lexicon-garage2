@@ -1,6 +1,6 @@
-﻿using Ovn4_Collections.Services;
+﻿using Garage2.Services;
 
-namespace Ovn4_Collections;
+namespace Garage2;
 
 class Program
 {

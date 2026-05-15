@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Ovn4_Collections.Extensions;
+namespace Garage2.Extensions;
 
 public static class StringBuilderExtensions
 {

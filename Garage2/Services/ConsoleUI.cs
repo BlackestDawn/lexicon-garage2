@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Text;
-using Ovn4_Collections.Extensions;
-using Ovn4_Collections.Helpers;
-using Ovn4_Collections.Models;
-using Ovn4_Collections.Models.Vehicles;
+using Garage2.Extensions;
+using Garage2.Helpers;
+using Garage2.Models;
+using Garage2.Models.Vehicles;
 using Spectre.Console;
 
-namespace Ovn4_Collections.Services;
+namespace Garage2.Services;
 
 public class ConsoleUI: IUIInterface
 {

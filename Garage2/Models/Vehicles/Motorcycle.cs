@@ -1,7 +1,7 @@
 using System.Text;
-using Ovn4_Collections.Extensions;
+using Garage2.Extensions;
 
-namespace Ovn4_Collections.Models.Vehicles;
+namespace Garage2.Models.Vehicles;
 
 public class Motorcycle(VehicleTypes vehicleType, string licenceNumber, int maxSpeed, IEngine engine, int numWheels, string color)
     : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)

@@ -1,4 +1,4 @@
-namespace Ovn4_Collections.Models;
+namespace Garage2.Models;
 
 public enum FuelTypes
 {

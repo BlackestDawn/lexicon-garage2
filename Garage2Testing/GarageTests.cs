@@ -1,6 +1,6 @@
-﻿using Ovn4_Collections.Models;
-using Ovn4_Collections.Models.Vehicles;
-using Ovn4_Collections.Services;
+﻿using Garage2.Models;
+using Garage2.Models.Vehicles;
+using Garage2.Services;
 
 namespace Ovn4_CollectionsTesting;
 

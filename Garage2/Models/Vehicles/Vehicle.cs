@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Ovn4_Collections.Models.Vehicles;
+namespace Garage2.Models.Vehicles;
 
 public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, int numWheels, string color)
 {
