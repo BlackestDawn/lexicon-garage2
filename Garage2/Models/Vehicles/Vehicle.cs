@@ -40,10 +40,10 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine eng
     public override bool Equals(object? obj)
         {
             if (obj is not Vehicle other) return false;
-            return LicenceNumber == other.LicenceNumber;
+            return _licenceNumber == other.LicenceNumber;
         }
 
-    public override int GetHashCode() => LicenceNumber.GetHashCode();
+    public override int GetHashCode() => _licenceNumber.GetHashCode();
 
     public string MinimalDescription()
     {
