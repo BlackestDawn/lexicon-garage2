@@ -1,3 +1,4 @@
+using Garage2.Models.Enums;
 using Garage2.Models.Vehicles;
 
 namespace Garage2.Models.Interfaces;

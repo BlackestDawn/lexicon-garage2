@@ -1,4 +1,5 @@
 using System.Text;
+using Garage2.Models.Enums;
 using Garage2.Models.Interfaces;
 
 namespace Garage2.Models.Vehicles;

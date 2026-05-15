@@ -3,6 +3,7 @@ using System.Text;
 using Garage2.Extensions;
 using Garage2.Helpers;
 using Garage2.Models;
+using Garage2.Models.Enums;
 using Garage2.Models.Interfaces;
 using Garage2.Models.Vehicles;
 using Spectre.Console;
