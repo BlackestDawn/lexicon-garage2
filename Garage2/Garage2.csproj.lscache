@@ -63,6 +63,7 @@ Models/
  FuelTypes.cs
  Interfaces/
   Engine.cs
+  IPrintable.cs
   IUI.cs
  Vehicles/
   Airplane.cs
