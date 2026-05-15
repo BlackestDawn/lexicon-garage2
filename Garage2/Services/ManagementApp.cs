@@ -1,4 +1,5 @@
 using Garage2.Models;
+using Garage2.Models.Collections;
 using Garage2.Models.Data;
 using Garage2.Models.Interfaces;
 using Garage2.Models.Vehicles;

@@ -57,6 +57,7 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 Extensions/StringBuilderExtensions.cs
 Helpers/EnumHelpers.cs
 Models/
+ Collections/Garage.cs
  Data/TestData.cs
  Enums.cs
  FuelTypes.cs
@@ -78,7 +79,6 @@ obj/Debug/net10.0/
 Program.cs
 Services/
  ConsoleUI.cs
- Garage.cs
  ManagementApp.cs
 
 [metadataReferences]

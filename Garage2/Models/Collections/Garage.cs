@@ -1,8 +1,7 @@
 using System.Collections;
-using Garage2.Models;
 using Garage2.Models.Vehicles;
 
-namespace Garage2.Services;
+namespace Garage2.Models.Collections;
 
 public class Garage
 {
