@@ -57,3 +57,4 @@ TestResult.xml
 nunit-*.xml
 *.code-workspace
 .vscode/
+*.lscache
