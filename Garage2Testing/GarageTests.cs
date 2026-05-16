@@ -10,8 +10,8 @@ public class GarageTests
     [Fact]
     public void AddingVehicle()
     {
-        Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White");
-        Vehicle[] expected = [ new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White") ];
+        Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
+        Vehicle[] expected = [ new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White") ];
         Garage garage = new(3);
 
         garage.AddVehicle(vehicle);
@@ -24,14 +24,14 @@ public class GarageTests
     public void AddingVehicles_BeyondCapacity_ThrowsArgumentException()
     {
         Vehicle[] vehicles = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
-            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
         Vehicle[] expected = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
-            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
         Garage garage = new(1);
 
@@ -42,14 +42,14 @@ public class GarageTests
     public void BulkAddingVehicles()
     {
         Vehicle[] vehicles = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
-            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
         Vehicle[] expected = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
-            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
         Garage garage = new(5);
 
@@ -63,13 +63,13 @@ public class GarageTests
     public void RemovingVehicles()
     {
         Vehicle[] vehicles = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
-            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
         Vehicle[] expected = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
         Garage garage = new(5);
 
@@ -84,9 +84,9 @@ public class GarageTests
     public void RemovingNonExistentVehicle_ThrowsArgumentException()
     {
         Vehicle[] vehicles = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
-            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
         Garage garage = new(5);
 
@@ -106,9 +106,9 @@ public class GarageTests
     public void AddingCars_Increases_AmountByType()
     {
         Vehicle[] vehicles = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), 4, "Black"),
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), "Black"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
         ];
         Garage garage = new(5);
         garage.BulkLoadVehicles(vehicles);
@@ -120,9 +120,9 @@ public class GarageTests
     public void RemovingCars_Decreases_AmountByType()
     {
         Vehicle[] vehicles = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
-            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), 4, "Black"),
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), "Black"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
         ];
         Garage garage = new(5);
         garage.BulkLoadVehicles(vehicles);

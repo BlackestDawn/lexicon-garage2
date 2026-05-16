@@ -6,7 +6,7 @@ using Garage2.Models.Interfaces;
 namespace Garage2.Models.Vehicles;
 
 public class Airplane(VehicleTypes vehicleType, string licenceNumber, int engineCount, IEngine engine, int numWheels, string color)
-    : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)
+    : WheeledVehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
     private readonly int _engineCount = engineCount;
 

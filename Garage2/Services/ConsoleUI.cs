@@ -186,7 +186,6 @@ public class ConsoleUI: IUI
                     AskForLicenceNumber(),
                     AskForEngineCount(),
                     AskForEngine(),
-                    AskForWheelCount(),
                     AskForColor()
                 );
                 break;
@@ -394,11 +393,11 @@ public class ConsoleUI: IUI
             predicates.Add(v => v.VehicleType == value);
         }
 
-        if (fields.Contains("Wheel count"))
+/*         if (fields.Contains("Wheel count"))
         {
             int value = AskForWheelCount();
             predicates.Add(v => v.WheelCount == value);
-        }
+        } */
 
         if (fields.Contains("Color"))
         {
@@ -435,7 +434,7 @@ public class ConsoleUI: IUI
                 item.LicenceNumber,
                 item.VehicleType.ToString(),
                 item.Engine.Description,
-                item.WheelCount.ToString(),
+                // item.WheelCount.ToString(),
                 item.Color
             );
         }

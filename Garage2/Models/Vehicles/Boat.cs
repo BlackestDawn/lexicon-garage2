@@ -5,8 +5,8 @@ using Garage2.Models.Interfaces;
 
 namespace Garage2.Models.Vehicles;
 
-public class Boat(VehicleTypes vehicleType, string licenceNumber, int engineCount, IEngine engine, int numWheels, string color)
-    : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)
+public class Boat(VehicleTypes vehicleType, string licenceNumber, int engineCount, IEngine engine, string color)
+    : Vehicle(vehicleType, licenceNumber, engine, color)
 {
     private readonly int _engineCount = engineCount;
 

@@ -4,7 +4,7 @@ using Garage2.Models.Interfaces;
 
 namespace Garage2.Models.Vehicles;
 
-public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, int numWheels, string color) : IPrintable
+public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, string color) : IPrintable
 {
     private readonly VehicleTypes _vehicleType = vehicleType;
     public VehicleTypes VehicleType
@@ -20,11 +20,6 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine eng
     public IEngine Engine
     {
         get => _engine;
-    }
-    private readonly int _numWheels = numWheels;
-    public int WheelCount
-    {
-        get => _numWheels;
     }
     private readonly string _color = color;
     public string Color
@@ -54,9 +49,8 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine eng
     {
         StringBuilder sb = new();
 
-        string wheelsDescriptionPart = _numWheels > 0 ? $", Wheels: {_numWheels}" : "";
         sb.AppendLine(MinimalDescription());
-        sb.AppendLine($"Color: {_color}{wheelsDescriptionPart}");
+        sb.AppendLine($"Color: {_color}");
         sb.AppendLine($"Engine: {_engine.Description}");
 
         return sb.ToString();
