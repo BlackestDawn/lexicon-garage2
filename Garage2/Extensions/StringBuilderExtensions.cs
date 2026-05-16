@@ -4,6 +4,8 @@ namespace Garage2.Extensions;
 
 public static class StringBuilderExtensions
 {
+    private static readonly string _newLine = Environment.NewLine;
+
     public static StringBuilder PrependLine(this StringBuilder sb, string content)
     {
         return sb.Insert(0, $"{content}{Environment.NewLine}");
@@ -16,8 +18,7 @@ public static class StringBuilderExtensions
             throw new ArgumentOutOfRangeException($"lineIndex can't be negative: {nameof(lineIndex)}");
         }
 
-        string newLine = Environment.NewLine;
-        int newLineLength = newLine.Length;
+        int newLineLength = _newLine.Length;
 
         if (lineIndex == 0)
         {
@@ -28,21 +29,21 @@ public static class StringBuilderExtensions
         for (int i = 0; i < sb.Length; i++)
         {
             if (
-                sb[i] == newLine[0] &&
-                (newLineLength == 1 || (i + 1 < sb.Length && sb[i + 1] == newLine[1]))
+                sb[i] == _newLine[0] &&
+                (newLineLength == 1 || (i + 1 < sb.Length && sb[i + 1] == _newLine[1]))
                 )
             {
                 currentLine++;
                 if (currentLine == lineIndex)
                 {
-                    return sb.Insert(i + newLineLength, content + newLine);
+                    return sb.Insert(i + newLineLength, content + _newLine);
                 }
             }
         }
 
-        if (sb.Length > 0 && !EndsWithNewline(sb, newLine))
+        if (sb.Length > 0 && !EndsWithNewline(sb, _newLine))
         {
-            sb.Append(newLine);
+            sb.Append(_newLine);
         }
         return sb.AppendLine(content);
     }
@@ -63,5 +64,36 @@ public static class StringBuilderExtensions
         }
 
         return true;
+    }
+
+    public static StringBuilder AppendToLine(this StringBuilder sb, int lineIndex, string content)
+    {
+        if (lineIndex < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(lineIndex));
+        }
+
+        int newLineLength = _newLine.Length;
+        int currentLine = 0;
+
+        for (int i = 0; i < sb.Length; i++)
+        {
+            if (sb[i] == _newLine[0] && (newLineLength == 1 || (i + 1 < sb.Length && sb[i + 1] == _newLine[1])))
+            {
+                if (currentLine == lineIndex)
+                {
+                    return sb.Insert(i, content);
+                }
+                currentLine++;
+                i += newLineLength - 1;
+            }
+        }
+
+        if (currentLine == lineIndex)
+        {
+            return sb.Append(content);
+        }
+
+        throw new ArgumentOutOfRangeException(nameof(lineIndex), "Line index not found.");
     }
 }
