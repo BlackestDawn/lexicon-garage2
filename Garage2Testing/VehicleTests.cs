@@ -10,7 +10,7 @@ public class VehicleTests
     [Fact]
     public void Checking_MinimalDescription()
     {
-        Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White");
+        Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
 
         string expected = "Licence: EV0001, Type: Car";
 
@@ -20,12 +20,12 @@ public class VehicleTests
     [Fact]
     public void Checking_Vehicle_FullDescription()
     {
-        Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White");
+        Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
 
         StringBuilder expected = new();
 
         expected.AppendLine("Licence: EV0001, Type: Car");
-        expected.AppendLine("Color: White, Wheels: 4");
+        expected.AppendLine("Color: White");
         expected.AppendLine("Engine: Electric, 100.0 kWh, 408HP");
 
         Assert.Equal(expected.ToString(), vehicle.FullDescription());
@@ -49,8 +49,8 @@ public class VehicleTests
     [Fact]
     public void Checking_Equality()
     {
-        Vehicle vehicle1 = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White");
-        Vehicle vehicle2 = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White");
+        Vehicle vehicle1 = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
+        Vehicle vehicle2 = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
 
         Assert.Equal(vehicle1, vehicle2);
     }

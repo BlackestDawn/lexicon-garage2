@@ -16,6 +16,6 @@ public static class TestData
         new Airplane(VehicleTypes.Airplane, "AIR001", 1, new FuelEngine(260, 5.2m, FuelTypes.Avgas), 3, "Yellow"),
         new Airplane(VehicleTypes.Airplane, "JET007", 2, new FuelEngine(90000, 0.0m, FuelTypes.JetAA1), 3, "White"),
         new Car(VehicleTypes.Car, "BIO555", CarTypes.Sport, 160, new FuelEngine(110, 1.6m, FuelTypes.Biofuel), 4, "Green"),
-        new Boat(VehicleTypes.Boat, "EV0099", 2, new ElectricEngine(204, 58.0m), 0, "Gray"),
+        new Boat(VehicleTypes.Boat, "EV0099", 2, new ElectricEngine(204, 58.0m), "Gray"),
     ];
 }

@@ -6,7 +6,7 @@ using Garage2.Models.Interfaces;
 namespace Garage2.Models.Vehicles;
 
 public class Bus(VehicleTypes vehicleType, string licenceNumber, int passangerCapacity, IEngine engine, int numWheels, string color)
-    : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)
+    : WheeledVehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
     private readonly int _passengerCapacity = passangerCapacity;
 

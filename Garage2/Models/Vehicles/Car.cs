@@ -6,7 +6,7 @@ using Garage2.Models.Interfaces;
 namespace Garage2.Models.Vehicles;
 
 public class Car(VehicleTypes vehicleType, string licenceNumber, CarTypes carType, int maxSpeed, IEngine engine, int numWheels, string color)
-    : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)
+    : WheeledVehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
     private readonly CarTypes _carType = carType;
     private readonly int _maxSpeed = maxSpeed;
