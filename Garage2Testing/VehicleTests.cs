@@ -54,4 +54,13 @@ public class VehicleTests
 
         Assert.Equal(vehicle1, vehicle2);
     }
+
+    [Fact]
+    public void Vehicle_NormalizedLicenceNumber()
+    {
+        Vehicle vehicle = new(VehicleTypes.Car, "ev0001", new ElectricEngine(408, 100.0m), "White");
+        string expected = "EV0001";
+
+        Assert.Equal(expected, vehicle.LicenceNumber);
+    }
 }
