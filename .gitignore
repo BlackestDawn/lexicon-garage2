@@ -55,5 +55,6 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
-Ovn4_Collections.code-workspace
+*.code-workspace
 .vscode/
+*.lscache
