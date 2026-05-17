@@ -16,8 +16,8 @@ public class Garage<T> : IEnumerable where T: Vehicle
     {
         get => _usedSpace;
     }
-    private readonly Vehicle?[] _vehicles;
-    public Vehicle[] Vehicles
+    private readonly T?[] _vehicles;
+    public T[] Vehicles
     {
         get
         {
@@ -33,7 +33,7 @@ public class Garage<T> : IEnumerable where T: Vehicle
     public Garage(int maxSpace)
     {
         _maxSpace = maxSpace;
-        _vehicles = new Vehicle?[maxSpace];
+        _vehicles = new T?[maxSpace];
         _amountByType = [];
         foreach (var type in Enum.GetValues<VehicleTypes>())
         {
@@ -41,7 +41,7 @@ public class Garage<T> : IEnumerable where T: Vehicle
         }
     }
 
-    public Garage(int maxSpace, Vehicle[] vehicles) : this(maxSpace)
+    public Garage(int maxSpace, T[] vehicles) : this(maxSpace)
     {
         int newCount = vehicles.Count();
         if (newCount > _maxSpace)
@@ -56,7 +56,7 @@ public class Garage<T> : IEnumerable where T: Vehicle
         _usedSpace = newCount;
     }
 
-    public void Add(Vehicle vehicle)
+    public void Add(T vehicle)
     {
         if (_usedSpace >= _maxSpace)
         {
@@ -93,12 +93,12 @@ public class Garage<T> : IEnumerable where T: Vehicle
         throw new ArgumentException($"Vehicle with number {licenceNumber} not found");
     }
 
-    public void Remove(Vehicle vehicle)
+    public void Remove(T vehicle)
     {
         Remove(vehicle.LicenceNumber);
     }
 
-    public Vehicle[] Find(Func<Vehicle, bool> predicate)
+    public T[] Find(Func<T, bool> predicate)
     {
         return [.. _vehicles.Where(v => v != null && predicate(v))];
     }
