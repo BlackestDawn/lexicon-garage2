@@ -8,7 +8,7 @@ namespace Garage2Testing;
 public class VehicleTests
 {
     [Fact]
-    public void Checking_MinimalDescription()
+    public void Vehicle_MinimalDescription()
     {
         Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
 
@@ -18,7 +18,7 @@ public class VehicleTests
     }
 
     [Fact]
-    public void Checking_Vehicle_FullDescription()
+    public void Vehicle_FullDescription()
     {
         Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
 
@@ -32,7 +32,7 @@ public class VehicleTests
     }
 
     [Fact]
-    public void Checking_Car_Overrided_FullDescription()
+    public void Vehicle_CarOverrided_FullDescription()
     {
         Car vehicle = new(VehicleTypes.Car, "EV0001", CarTypes.Sedan, 125, new ElectricEngine(408, 100.0m), 4, "White");
 
@@ -47,11 +47,20 @@ public class VehicleTests
     }
 
     [Fact]
-    public void Checking_Equality()
+    public void Vehicle_CompareEquality()
     {
         Vehicle vehicle1 = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
         Vehicle vehicle2 = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
 
         Assert.Equal(vehicle1, vehicle2);
+    }
+
+    [Fact]
+    public void Vehicle_NormalizedLicenceNumber()
+    {
+        Vehicle vehicle = new(VehicleTypes.Car, "ev0001", new ElectricEngine(408, 100.0m), "White");
+        string expected = "EV0001";
+
+        Assert.Equal(expected, vehicle.LicenceNumber);
     }
 }

@@ -4,148 +4,116 @@ using Garage2.Models.Vehicles;
 
 namespace Garage2.Models.Collections;
 
-public class Garage
+public class Garage<T> : IEnumerable where T: Vehicle
 {
-    private readonly int _maxSpace;
-    public int MaxSpace
+    private int _capacity;
+    public int Capacity
     {
-        get => _maxSpace;
+        get => _capacity;
     }
-    private int _usedSpace = 0;
-    public int UsedSpace
+    private int _length = 0;
+    public int Length
     {
-        get => _usedSpace;
+        get => _length;
     }
-    private readonly Vehicle[] _vehicles;
-    private readonly Hashtable _amountByType;
-    public Hashtable AmountsByVehicleType
+    private T?[] _vehicles;
+    public T[] Vehicles
+    {
+        get
+        {
+            return _length > 0 ? [.. _vehicles.Where(v => v != null)] : [];
+        }
+    }
+    private readonly Dictionary<VehicleTypes, int> _amountByType;
+    public Dictionary<VehicleTypes, int> TypesCount
     {
         get => _amountByType;
     }
 
-    public Garage(int maxSpace)
+    public Garage(int capacity)
     {
-        _maxSpace = maxSpace;
-        _vehicles = new Vehicle[maxSpace];
-        _amountByType = new Hashtable();
+        _capacity = capacity;
+        _vehicles = new T?[capacity];
+        _amountByType = [];
         foreach (var type in Enum.GetValues<VehicleTypes>())
         {
-            _amountByType.Add(type, 0);
+            _amountByType[type] = 0;
         }
     }
 
-    public Hashtable GetStatus()
+    public Garage(int capacity, T[] vehicles) : this(capacity)
     {
-        return new Hashtable
+        int newCount = vehicles.Count();
+        if (newCount > _capacity)
         {
-          { "total", _maxSpace },
-          { "used",  _usedSpace },
-          { "types", _amountByType }
-        };
-    }
-
-    public Vehicle[] GetAllVehicles()
-    {
-        Vehicle[] parkedVehicles = new Vehicle[_usedSpace];
-        int index = 0;
-        foreach (var vehicle in _vehicles)
-        {
-            if (vehicle != null)
-            {
-                parkedVehicles[index] = vehicle;
-                index++;
-            }
+            throw new ArgumentOutOfRangeException("Vehicle count is higher than capacity");
         }
-        return parkedVehicles;
-    }
-
-    public string[] GetAllLicenceNumbers()
-    {
-        string[] licenceNumbers = new string[_usedSpace];
-        int index = 0;
-        foreach (var vehicle in _vehicles)
+        for (int i = 0; i < newCount; i++)
         {
-            if (vehicle != null)
-            {
-                licenceNumbers[index] = vehicle.LicenceNumber;
-                index++;
-            }
+            _vehicles[i] = vehicles[i];
+            _amountByType[vehicles[i].VehicleType]++;
         }
-        return licenceNumbers;
+        _length = newCount;
     }
 
-    public void ListVehicleAmountByType()
+    public void Resize(int capacity)
     {
-        throw new NotImplementedException();
-    }
-
-    public bool CheckIfLicencePresent(string licence)
-    {
-        for (int i = 0; i < _maxSpace; i++)
+        if (capacity < _length)
         {
-            if (_vehicles[i] != null && _vehicles[i].LicenceNumber.ToLower() == licence.ToLower())
-            {
-                return true;
-            }
+            throw new ArgumentException("Cannot resize below current length");
         }
-        return false;
+
+        Array.Resize(ref _vehicles, capacity);
+        _capacity = capacity;
     }
 
-    public void AddVehicle(Vehicle vehicle)
+    public void Add(T vehicle)
     {
-        if (_usedSpace == _maxSpace)
+        if (_length >= _capacity)
         {
             throw new ArgumentException("Space is full");
         }
-        for (int i = 0; i < _maxSpace; i++)
+        for (int i = 0; i < _capacity; i++)
         {
             if (_vehicles[i] == null)
             {
-                var vehicleType = vehicle.VehicleType;
-                _amountByType[vehicleType] = (int)_amountByType[vehicleType] + 1;
+                _amountByType[vehicle.VehicleType]++;
                 _vehicles[i] = vehicle;
-                _usedSpace++;
+                _length++;
                 return;
             }
         }
     }
 
-    public void RemoveVehicle(string licenceNumber)
+    public void Remove(string licenceNumber)
     {
-        if (_usedSpace == 0)
+        if (_length == 0)
         {
             throw new ArgumentException("Space is empty");
         }
-        for (int i = 0; i < _maxSpace; i++)
+        for (int i = 0; i < _capacity; i++)
         {
-            if (_vehicles[i] != null && _vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
+            if (_vehicles[i] != null && _vehicles[i].LicenceNumber == licenceNumber)
             {
-                var vehicleType = _vehicles[i].VehicleType;
-                _amountByType[vehicleType] = (int)_amountByType[vehicleType] - 1;
+                _amountByType[_vehicles[i].VehicleType]--;
                 _vehicles[i] = null;
-                _usedSpace--;
+                _length--;
                 return;
             }
         }
         throw new ArgumentException($"Vehicle with number {licenceNumber} not found");
     }
 
-    public void BulkLoadVehicles(Vehicle[] vehicles)
+    public void Remove(T vehicle)
     {
-        try {
-            foreach (var vehicle in vehicles)
-            {
-                AddVehicle(vehicle);
-            }
-        }
-        catch (ArgumentException ex)
-        {
-            throw new ArgumentException($"Could not load all vehicles: {ex.Message}");
-        }
+        Remove(vehicle.LicenceNumber);
     }
 
-    public Vehicle[] FindVehicles(Func<Vehicle, bool> predicate)
+    public T[] Find(Func<T, bool> predicate)
     {
         return [.. _vehicles.Where(v => v != null && predicate(v))];
     }
+
+    public IEnumerator GetEnumerator() => Vehicles.GetEnumerator();
+    public int Count() => _length;
 }

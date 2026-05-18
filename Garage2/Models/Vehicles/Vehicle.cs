@@ -11,7 +11,7 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine eng
     {
         get => _vehicleType;
     }
-    private readonly string _licenceNumber = licenceNumber;
+    private readonly string _licenceNumber = licenceNumber.ToUpper();
     public string LicenceNumber
     {
         get => _licenceNumber;
