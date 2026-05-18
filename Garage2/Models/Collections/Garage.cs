@@ -6,7 +6,7 @@ namespace Garage2.Models.Collections;
 
 public class Garage<T> : IEnumerable where T: Vehicle
 {
-    private readonly int _capacity;
+    private int _capacity;
     public int Capacity
     {
         get => _capacity;
@@ -16,7 +16,7 @@ public class Garage<T> : IEnumerable where T: Vehicle
     {
         get => _length;
     }
-    private readonly T?[] _vehicles;
+    private T?[] _vehicles;
     public T[] Vehicles
     {
         get
@@ -54,6 +54,17 @@ public class Garage<T> : IEnumerable where T: Vehicle
             _amountByType[vehicles[i].VehicleType]++;
         }
         _length = newCount;
+    }
+
+    public void Resize(int capacity)
+    {
+        if (capacity < _length)
+        {
+            throw new ArgumentException("Cannot resize below current length");
+        }
+
+        Array.Resize(ref _vehicles, capacity);
+        _capacity = capacity;
     }
 
     public void Add(T vehicle)
