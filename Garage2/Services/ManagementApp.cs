@@ -47,7 +47,7 @@ public class ManagementApp
                         _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Add:
-                        if (_garage.UsedSpace < _garage.MaxSpace)
+                        if (_garage.Length < _garage.Capacity)
                         {
                             /* Vehicle vehicle = _ui.AddVehicleWindow();
                             if (!_garage.CheckIfLicencePresent(vehicle.LicenceNumber))

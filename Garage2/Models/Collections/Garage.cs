@@ -6,22 +6,22 @@ namespace Garage2.Models.Collections;
 
 public class Garage<T> : IEnumerable where T: Vehicle
 {
-    private readonly int _maxSpace;
-    public int MaxSpace
+    private readonly int _capacity;
+    public int Capacity
     {
-        get => _maxSpace;
+        get => _capacity;
     }
-    private int _usedSpace = 0;
-    public int UsedSpace
+    private int _length = 0;
+    public int Length
     {
-        get => _usedSpace;
+        get => _length;
     }
     private readonly T?[] _vehicles;
     public T[] Vehicles
     {
         get
         {
-            return _usedSpace > 0 ? [.. _vehicles.Where(v => v != null)] : [];
+            return _length > 0 ? [.. _vehicles.Where(v => v != null)] : [];
         }
     }
     private readonly Dictionary<VehicleTypes, int> _amountByType;
@@ -30,10 +30,10 @@ public class Garage<T> : IEnumerable where T: Vehicle
         get => _amountByType;
     }
 
-    public Garage(int maxSpace)
+    public Garage(int capacity)
     {
-        _maxSpace = maxSpace;
-        _vehicles = new T?[maxSpace];
+        _capacity = capacity;
+        _vehicles = new T?[capacity];
         _amountByType = [];
         foreach (var type in Enum.GetValues<VehicleTypes>())
         {
@@ -41,10 +41,10 @@ public class Garage<T> : IEnumerable where T: Vehicle
         }
     }
 
-    public Garage(int maxSpace, T[] vehicles) : this(maxSpace)
+    public Garage(int capacity, T[] vehicles) : this(capacity)
     {
         int newCount = vehicles.Count();
-        if (newCount > _maxSpace)
+        if (newCount > _capacity)
         {
             throw new ArgumentOutOfRangeException("Vehicle count is higher than capacity");
         }
@@ -53,22 +53,22 @@ public class Garage<T> : IEnumerable where T: Vehicle
             _vehicles[i] = vehicles[i];
             _amountByType[vehicles[i].VehicleType]++;
         }
-        _usedSpace = newCount;
+        _length = newCount;
     }
 
     public void Add(T vehicle)
     {
-        if (_usedSpace >= _maxSpace)
+        if (_length >= _capacity)
         {
             throw new ArgumentException("Space is full");
         }
-        for (int i = 0; i < _maxSpace; i++)
+        for (int i = 0; i < _capacity; i++)
         {
             if (_vehicles[i] == null)
             {
                 _amountByType[vehicle.VehicleType]++;
                 _vehicles[i] = vehicle;
-                _usedSpace++;
+                _length++;
                 return;
             }
         }
@@ -76,17 +76,17 @@ public class Garage<T> : IEnumerable where T: Vehicle
 
     public void Remove(string licenceNumber)
     {
-        if (_usedSpace == 0)
+        if (_length == 0)
         {
             throw new ArgumentException("Space is empty");
         }
-        for (int i = 0; i < _maxSpace; i++)
+        for (int i = 0; i < _capacity; i++)
         {
             if (_vehicles[i] != null && _vehicles[i].LicenceNumber == licenceNumber)
             {
                 _amountByType[_vehicles[i].VehicleType]--;
                 _vehicles[i] = null;
-                _usedSpace--;
+                _length--;
                 return;
             }
         }
@@ -104,5 +104,5 @@ public class Garage<T> : IEnumerable where T: Vehicle
     }
 
     public IEnumerator GetEnumerator() => Vehicles.GetEnumerator();
-    public int Count() => _usedSpace;
+    public int Count() => _length;
 }
