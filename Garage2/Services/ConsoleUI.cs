@@ -12,7 +12,7 @@ namespace Garage2.Services;
 
 public class ConsoleUI: IUI
 {
-    private readonly Func<Hashtable> _usageStatus;
+    private readonly Func<Dictionary<string, int>> _usageStatus;
     private readonly Stack _menuPath = new(5);
     private readonly Color[] _typesColor =
     [
@@ -23,7 +23,7 @@ public class ConsoleUI: IUI
         Color.LightPink4
     ];
 
-    public ConsoleUI(Func<Hashtable> getStatus)
+    public ConsoleUI(Func<Dictionary<string, int>> getStatus)
     {
         _usageStatus = getStatus;
         _menuPath.Push("Main Menu");
@@ -45,13 +45,13 @@ public class ConsoleUI: IUI
             .NoBorder()
             .Padding(0, 2);
 
-        Hashtable currentStatus = _usageStatus();
+        var currentStatus = _usageStatus();
 
         Panel usagePanel = new Panel(
             new BreakdownChart()
                 .Width(20)
-                .AddItem("Used:", (int)currentStatus["used"], Color.Red3)
-                .AddItem("Free:", (int)currentStatus["total"] - (int)currentStatus["used"], Color.LightYellow3)
+                .AddItem("Used:", currentStatus["used"], Color.Red3)
+                .AddItem("Free:", currentStatus["max"] - currentStatus["used"], Color.LightYellow3)
             )
             .Header("Space usage")
             .NoBorder()
@@ -59,9 +59,11 @@ public class ConsoleUI: IUI
 
         BreakdownChartItem[] typesBreakdown = new BreakdownChartItem[Enum.GetNames<VehicleTypes>().Length];
 
-        foreach (DictionaryEntry item in (Hashtable)currentStatus["types"])
+        foreach (var item in Enum.GetValues<VehicleTypes>())
         {
-            typesBreakdown[(int)item.Key] = new BreakdownChartItem($"{item.Key}", (int)item.Value, _typesColor[(int)item.Key]);
+            string key = item.ToString();
+            int index = (int)item;
+            typesBreakdown[index] = new BreakdownChartItem($"{key}", _usageStatus()[key], _typesColor[index]);
         }
 
         Panel typesPanel = new Panel(
