@@ -1,4 +1,3 @@
-using System.Collections;
 using Garage2.Models.Collections;
 using Garage2.Models.Data;
 using Garage2.Models.Enums;
@@ -16,8 +15,7 @@ public class ManagementApp
     public ManagementApp()
     {
         _garage = new Garage<Vehicle>(20, TestData.testVehicles);
-        _ui = new ConsoleUI(() => new Hashtable());
-        // _ui = new ConsoleUI(_garage.TypesCount);
+        _ui = new ConsoleUI(UsageStats);
     }
 
     public void RunApp()
@@ -49,16 +47,16 @@ public class ManagementApp
                     case MainMenuOptions.Add:
                         if (_garage.Length < _garage.Capacity)
                         {
-                            /* Vehicle vehicle = _ui.AddVehicleWindow();
-                            if (!_garage.CheckIfLicencePresent(vehicle.LicenceNumber))
+                            Vehicle vehicle = _ui.AddVehicleWindow();
+                            if (!_garage.Vehicles.Any(v => v.LicenceNumber == vehicle.LicenceNumber))
                             {
-                                _garage.AddVehicle(vehicle);
+                                _garage.Add(vehicle);
                                 _ui.SuccessMessage($"Vehicle '{vehicle.MinimalDescription()}' added.");
                             }
                             else
                             {
                                 _ui.WarningMessage($"Vehicle with licence {vehicle.LicenceNumber} already parked");
-                            } */
+                            }
                         }
                         else
                         {
@@ -67,24 +65,24 @@ public class ManagementApp
                         _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Remove:
-                        /* string[] licenses = _garage.GetAllLicenceNumbers();
+                        string[] licenses = _garage.Vehicles.Select(v => v.LicenceNumber).ToArray();
                         if (licenses.Length > 0)
                         {
                             string licence = _ui.RemoveVehicleWindow(licenses);
-                            _garage.RemoveVehicle(licence);
+                            _garage.Remove(licence);
                             _ui.SuccessMessage($"Vechile with licence number '{licence}' removed.");
                         }
                         else
                         {
                             _ui.WarningMessage("Nothing to remove, no vehicles parked.");
-                        } */
+                        }
                         _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Search:
                         var searchParams = _ui.SearchInputWindow();
-                        /* if (searchParams != null)
+                        if (searchParams != null)
                         {
-                            Vehicle[] result = _garage.FindVehicles(searchParams);
+                            Vehicle[] result = _garage.Vehicles.Where(searchParams).ToArray();
                             if (result.Length > 0)
                             {
                                 _ui.SearchResultWindow(result);
@@ -98,7 +96,7 @@ public class ManagementApp
                         else
                         {
                             _ui.WarningMessage("No search terms specified");
-                        } */
+                        }
                         _ui.ResetMenuPath();
                         break;
                     default:
@@ -112,5 +110,18 @@ public class ManagementApp
                 _ui.ResetMenuPath();
             }
         } while (menuChoice != MainMenuOptions.Quit);
+    }
+
+    private Dictionary<string, int> UsageStats()
+    {
+        Dictionary<string, int> stats = [];
+        stats["max"] = _garage.Capacity;
+        stats["used"] = _garage.Length;
+        foreach (var item in _garage.TypesCount)
+        {
+            stats[item.Key.ToString()] = item.Value;
+        }
+
+        return stats;
     }
 }
