@@ -12,9 +12,7 @@ public interface IUI
     public void PauseDisplay(string message = "Press any key to continue");
     public void ResetMenuPath();
     public void VehicleDetailsWindow(Vehicle vehicle);
-    public void ErrorMessage(string message);
-    public void WarningMessage(string message);
-    public void SuccessMessage(string message);
+    public void Message(string content, MessageTypes type = MessageTypes.Standard);
     public Func<Vehicle, bool>? SearchInputWindow();
     public void SearchResultWindow(Vehicle[] vehicles);
 }

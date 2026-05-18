@@ -96,7 +96,7 @@ public class ConsoleUI: IUI
 
     public void PauseDisplay(string message = "Press any key to continue")
     {
-        AnsiConsole.MarkupLine($"\n[gray]{message}[/]");
+        Message($"\n{message}", MessageTypes.Info);
         Console.ReadKey(intercept: true);
     }
 
@@ -346,21 +346,17 @@ public class ConsoleUI: IUI
         AnsiConsole.MarkupLine(vehicle.FullDescription());
     }
 
-    public void ErrorMessage(string message)
+    public void Message(string content, MessageTypes type = MessageTypes.Standard)
     {
-        AnsiConsole.MarkupLine($"[red]Something went wrong:{Environment.NewLine}{message}[/]");
-        PauseDisplay();
-    }
-
-    public void SuccessMessage(string message)
-    {
-        AnsiConsole.MarkupLine($"[green]{message}[/]");
-        PauseDisplay();
-    }
-
-    public void WarningMessage(string message)
-    {
-        AnsiConsole.MarkupLine($"[yellow]{message}[/]");
+        string color = type switch
+        {
+            MessageTypes.Info => "gray",
+            MessageTypes.Success => "green",
+            MessageTypes.Warning => "yellow",
+            MessageTypes.Error => "red",
+            _ => "white",
+        };
+        AnsiConsole.MarkupLine($"[{color}]{content}[/]");
         PauseDisplay();
     }
 

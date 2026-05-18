@@ -39,7 +39,7 @@ public class ManagementApp
                         }
                         else
                         {
-                            _ui.WarningMessage("Nothing to view, no vehicles parked.");
+                            _ui.Message("Nothing to view, no vehicles parked.", MessageTypes.Warning);
                         }
                         _ui.PauseDisplay();
                         _ui.ResetMenuPath();
@@ -51,16 +51,16 @@ public class ManagementApp
                             if (!_garage.Vehicles.Any(v => v.LicenceNumber == vehicle.LicenceNumber))
                             {
                                 _garage.Add(vehicle);
-                                _ui.SuccessMessage($"Vehicle '{vehicle.MinimalDescription()}' added.");
+                                _ui.Message($"Vehicle '{vehicle.MinimalDescription()}' added.", MessageTypes.Success);
                             }
                             else
                             {
-                                _ui.WarningMessage($"Vehicle with licence {vehicle.LicenceNumber} already parked");
+                                _ui.Message($"Vehicle with licence {vehicle.LicenceNumber} already parked", MessageTypes.Warning);
                             }
                         }
                         else
                         {
-                            _ui.WarningMessage("Can't add vehicle, no more space left.");
+                            _ui.Message("Can't add vehicle, no more space left.", MessageTypes.Warning);
                         }
                         _ui.ResetMenuPath();
                         break;
@@ -70,11 +70,11 @@ public class ManagementApp
                         {
                             string licence = _ui.RemoveVehicleWindow(licenses);
                             _garage.Remove(licence);
-                            _ui.SuccessMessage($"Vechile with licence number '{licence}' removed.");
+                            _ui.Message($"Vechile with licence number '{licence}' removed.", MessageTypes.Warning);
                         }
                         else
                         {
-                            _ui.WarningMessage("Nothing to remove, no vehicles parked.");
+                            _ui.Message("Nothing to remove, no vehicles parked.", MessageTypes.Warning);
                         }
                         _ui.ResetMenuPath();
                         break;
@@ -90,23 +90,23 @@ public class ManagementApp
                             }
                             else
                             {
-                                _ui.WarningMessage("No vehicles found");
+                                _ui.Message("No vehicles found", MessageTypes.Warning);
                             }
                         }
                         else
                         {
-                            _ui.WarningMessage("No search terms specified");
+                            _ui.Message("No search terms specified", MessageTypes.Warning);
                         }
                         _ui.ResetMenuPath();
                         break;
                     default:
-                        _ui.ErrorMessage($"Menu option does not exist or is not implemented yet: {menuChoice}");
+                        _ui.Message($"Menu option does not exist or is not implemented yet: {menuChoice}", MessageTypes.Error);
                         break;
                 }
             }
             catch (Exception ex)
             {
-                _ui.ErrorMessage(ex.Message);
+                _ui.Message($"Something went wrong{Environment.NewLine}{ex.Message}", MessageTypes.Error);
                 _ui.ResetMenuPath();
             }
         } while (menuChoice != MainMenuOptions.Quit);
