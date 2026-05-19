@@ -154,63 +154,50 @@ public class ConsoleUI: IUI
         }
 
         VehicleTypes vehicleType = AskForVehicleType();
-        Vehicle newVehicle;
-
-        switch (vehicleType)
+        Vehicle newVehicle = vehicleType switch
         {
-            case VehicleTypes.Car:
-                newVehicle = new Car(
-                    vehicleType,
-                    newLicense,
-                    AskForCarType(),
-                    AskForMaxSpeed(),
-                    AskForEngine(),
-                    AskForWheelCount(),
-                    AskForColor()
-                );
-                break;
-            case VehicleTypes.Bus:
-                newVehicle = new Bus(
-                    vehicleType,
-                    newLicense,
-                    AskForPassengerCount(),
-                    AskForEngine(),
-                    AskForWheelCount(),
-                    AskForColor()
-                );
-                break;
-            case VehicleTypes.Motorcycle:
-                newVehicle = new Motorcycle(
-                    vehicleType,
-                    newLicense,
-                    AskForMaxSpeed(),
-                    AskForEngine(),
-                    AskForWheelCount(),
-                    AskForColor()
-                );
-                break;
-            case VehicleTypes.Boat:
-                newVehicle = new Boat(
-                    vehicleType,
-                    newLicense,
-                    AskForEngineCount(),
-                    AskForEngine(),
-                    AskForColor()
-                );
-                break;
-            case VehicleTypes.Airplane:
-                newVehicle = new Airplane(
-                    vehicleType,
-                    newLicense,
-                    AskForEngineCount(),
-                    AskForEngine(),
-                    AskForWheelCount(),
-                    AskForColor()
-                );
-                break;
-            default:
-                throw new ArgumentException($"Unknown vehicle type: {vehicleType}");
-        }
+            VehicleTypes.Car => new Car(
+                                vehicleType,
+                                newLicense,
+                                AskForCarType(),
+                                AskForMaxSpeed(),
+                                AskForEngine(),
+                                AskForWheelCount(),
+                                AskForColor()
+                            ),
+            VehicleTypes.Bus => new Bus(
+                                vehicleType,
+                                newLicense,
+                                AskForPassengerCount(),
+                                AskForEngine(),
+                                AskForWheelCount(),
+                                AskForColor()
+                            ),
+            VehicleTypes.Motorcycle => new Motorcycle(
+                                vehicleType,
+                                newLicense,
+                                AskForMaxSpeed(),
+                                AskForEngine(),
+                                AskForWheelCount(),
+                                AskForColor()
+                            ),
+            VehicleTypes.Boat => new Boat(
+                                vehicleType,
+                                newLicense,
+                                AskForEngineCount(),
+                                AskForEngine(),
+                                AskForColor()
+                            ),
+            VehicleTypes.Airplane => new Airplane(
+                                vehicleType,
+                                newLicense,
+                                AskForEngineCount(),
+                                AskForEngine(),
+                                AskForWheelCount(),
+                                AskForColor()
+                            ),
+            _ => throw new ArgumentException($"Unknown vehicle type: {vehicleType}"),
+        };
 
         _menuPath.Pop();
         return newVehicle;
