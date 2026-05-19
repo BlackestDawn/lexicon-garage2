@@ -344,6 +344,10 @@ public class ConsoleUI: IUI
         RenderHeader();
 
         AnsiConsole.MarkupLine(vehicle.FullDescription());
+
+        _menuPath.Pop();
+        _menuPath.Pop();
+        PauseDisplay();
     }
 
     public void Message(string content, MessageTypes type = MessageTypes.Standard)
@@ -437,8 +441,9 @@ public class ConsoleUI: IUI
             );
         }
 
-        _menuPath.Pop();
-
         AnsiConsole.Write(table);
+
+        _menuPath.Pop();
+        PauseDisplay();
     }
 }

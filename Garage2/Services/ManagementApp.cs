@@ -40,8 +40,6 @@ public class ManagementApp
                         {
                             _ui.Message("Nothing to view, no vehicles parked.", MessageTypes.Warning);
                         }
-                        _ui.PauseDisplay();
-                        _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Add:
                         if (_garage.Length < _garage.Capacity)
@@ -61,7 +59,6 @@ public class ManagementApp
                         {
                             _ui.Message("Can't add vehicle, no more space left.", MessageTypes.Warning);
                         }
-                        _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Remove:
                         if (_garage.Length > 0)
@@ -74,7 +71,6 @@ public class ManagementApp
                         {
                             _ui.Message("Nothing to remove, no vehicles parked.", MessageTypes.Warning);
                         }
-                        _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Search:
                         var searchParams = _ui.SearchInputWindow();
@@ -84,7 +80,6 @@ public class ManagementApp
                             if (result != null)
                             {
                                 _ui.SearchResultWindow(result);
-                                _ui.PauseDisplay();
                             }
                             else
                             {
@@ -95,7 +90,6 @@ public class ManagementApp
                         {
                             _ui.Message("No search terms specified", MessageTypes.Warning);
                         }
-                        _ui.ResetMenuPath();
                         break;
                     default:
                         _ui.Message($"Menu option does not exist or is not implemented yet: {menuChoice}", MessageTypes.Error);
@@ -105,7 +99,6 @@ public class ManagementApp
             catch (Exception ex)
             {
                 _ui.Message($"Something went wrong{Environment.NewLine}{ex.Message}", MessageTypes.Error);
-                _ui.ResetMenuPath();
             }
         } while (menuChoice != MainMenuOptions.Quit);
     }
