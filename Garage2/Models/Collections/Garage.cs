@@ -17,13 +17,6 @@ public class Garage<T> : IEnumerable<T> where T: Vehicle
         get => _length;
     }
     private T?[] _vehicles;
-    public T[] Vehicles
-    {
-        get
-        {
-            return _length > 0 ? [.. _vehicles.Where(v => v != null)] : [];
-        }
-    }
     private readonly Dictionary<VehicleTypes, int> _amountByType;
     public Dictionary<VehicleTypes, int> TypesCount
     {

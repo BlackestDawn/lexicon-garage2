@@ -14,7 +14,7 @@ public class GarageTests
         Vehicle[] expected = [ new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White") ];
         Garage<Vehicle> garage = new(10, [vehicle]);
 
-        Assert.Equal(expected, garage.Vehicles);
+        Assert.Equal(expected, [.. garage]);
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class GarageTests
         Garage<Vehicle> garage = new(5, vehicles);
 
         garage.Remove("BIKE42");
-        var result = garage.Vehicles;
+        var result = garage.ToArray();
 
         Assert.Equal(expected, result);
     }
