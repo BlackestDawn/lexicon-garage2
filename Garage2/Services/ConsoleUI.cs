@@ -467,18 +467,45 @@ public class ConsoleUI: IUI
         _menuPath.Push("Search result");
         RenderHeader();
 
-        Table table = new();
-        table.AddColumns("Licence number", "type", "Engine", "Wheels", "Color");
+        var list = vehicles.ToList();
 
-        foreach (var item in vehicles)
+        // Detekt and build dynamic columns
+        bool hasWheels = list.Any(v => v is WheeledVehicle);
+        bool hasCarType = list.Any(v => v is Car);
+        bool hasMaxSpeed = list.Any(v => v is Car || v is Motorcycle);
+        bool hasEngineCount = list.Any(v => v is Airplane || v is Boat);
+        bool hasPassengers = list.Any(v => v is Bus);
+
+        var columns = new List<string> {"Licence number", "Vehicle type", "Engine", "Color"};
+        if (hasWheels) columns.Add("Wheels");
+        if (hasCarType) columns.Add("Car type");
+        if (hasMaxSpeed) columns.Add("Max speed");
+        if (hasEngineCount) columns.Add("Engine count");
+        if (hasPassengers) columns.Add("Passenger capacity");
+
+        // Build table
+        Table table = new();
+        table.AddColumns(columns.ToArray());
+
+        foreach (var item in list)
         {
-            table.AddRow(
+            var row = new List<string>
+            {
                 item.LicenceNumber,
                 item.VehicleType.ToString(),
                 item.Engine.Description,
-                "", // item.WheelCount.ToString(),
                 item.Color
-            );
+            };
+
+            if (hasWheels) row.Add(item is WheeledVehicle v2 ? v2.WheelCount.ToString() : "-");
+            if (hasCarType) row.Add(item is Car v2 ? v2.CarType.ToString() : "-");
+            if (hasMaxSpeed) row.Add(item is Car v2 ? v2.WheelCount.ToString() :
+                                    item is Motorcycle v3 ? v3.MaxSpeed.ToString() : "-");
+            if (hasEngineCount) row.Add(item is Airplane v2 ? v2.EngineCount.ToString() :
+                                    item is Boat v3 ? v3.EngineCount.ToString() : "-");
+            if (hasPassengers) row.Add(item is Bus v2 ? v2.PassengerCapacity.ToString() : "-");
+
+            table.AddRow(row.ToArray());
         }
 
         AnsiConsole.Write(table);
