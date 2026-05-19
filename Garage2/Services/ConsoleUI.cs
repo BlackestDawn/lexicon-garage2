@@ -150,6 +150,7 @@ public class ConsoleUI: IUI
         if (existingLicenses.Any(v => v.Equals(newLicense, StringComparison.OrdinalIgnoreCase)))
         {
             Message($"Vehicle with licence {newLicense} already exists");
+            _menuPath.Pop();
             return null;
         }
 
