@@ -226,6 +226,14 @@ public class ConsoleUI: IUI
             );
     }
 
+    private string AskForPartialLicenceNumber()
+    {
+        return AnsiConsole.Prompt(
+            new TextPrompt<string>("Enter licence number:")
+                .Validate(input => input.Length >= 1, "Must be at least 1 character")
+            );
+    }
+
     private CarTypes AskForCarType()
     {
         return AnsiConsole.Prompt(
@@ -385,7 +393,7 @@ public class ConsoleUI: IUI
 
         if (fields.Contains("Licence number"))
         {
-            string value = AskForLicenceNumber();
+            string value = AskForPartialLicenceNumber();
             predicates.Add(v => v.LicenceNumber.Contains(value, StringComparison.OrdinalIgnoreCase));
         }
 
