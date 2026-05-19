@@ -15,7 +15,7 @@ public class ManagementApp
     public ManagementApp()
     {
         _garage = new Garage<Vehicle>(20, TestData.testVehicles);
-        _ui = new ConsoleUI(UsageStats);
+        _ui = new ConsoleUI(_garage);
     }
 
     public void RunApp()
@@ -101,18 +101,5 @@ public class ManagementApp
                 _ui.Message($"Something went wrong{Environment.NewLine}{ex.Message}", MessageTypes.Error);
             }
         } while (menuChoice != MainMenuOptions.Quit);
-    }
-
-    private Dictionary<string, int> UsageStats()
-    {
-        Dictionary<string, int> stats = [];
-        stats["max"] = _garage.Capacity;
-        stats["used"] = _garage.Length;
-        foreach (var item in _garage.TypesCount)
-        {
-            stats[item.Key.ToString()] = item.Value;
-        }
-
-        return stats;
     }
 }

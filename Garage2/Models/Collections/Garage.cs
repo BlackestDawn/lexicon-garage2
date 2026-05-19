@@ -1,10 +1,11 @@
 using System.Collections;
 using Garage2.Models.Enums;
+using Garage2.Models.Interfaces;
 using Garage2.Models.Vehicles;
 
 namespace Garage2.Models.Collections;
 
-public class Garage<T> : IEnumerable<T> where T: Vehicle
+public class Garage<T> : IEnumerable<T>, IStatusProvider where T: Vehicle
 {
     private int _capacity;
     public int Capacity
@@ -120,4 +121,6 @@ public class Garage<T> : IEnumerable<T> where T: Vehicle
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     public int Count() => _length;
+
+    public GarageStatus GetStatus() => new(_capacity, _length, _amountByType);
 }
