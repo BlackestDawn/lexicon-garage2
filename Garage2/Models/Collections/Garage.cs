@@ -1,10 +1,11 @@
 using System.Collections;
 using Garage2.Models.Enums;
+using Garage2.Models.Interfaces;
 using Garage2.Models.Vehicles;
 
 namespace Garage2.Models.Collections;
 
-public class Garage<T> : IEnumerable where T: Vehicle
+public class Garage<T> : IEnumerable<T>, IStatusProvider where T: Vehicle
 {
     private int _capacity;
     public int Capacity
@@ -17,13 +18,6 @@ public class Garage<T> : IEnumerable where T: Vehicle
         get => _length;
     }
     private T?[] _vehicles;
-    public T[] Vehicles
-    {
-        get
-        {
-            return _length > 0 ? [.. _vehicles.Where(v => v != null)] : [];
-        }
-    }
     private readonly Dictionary<VehicleTypes, int> _amountByType;
     public Dictionary<VehicleTypes, int> TypesCount
     {
@@ -114,6 +108,19 @@ public class Garage<T> : IEnumerable where T: Vehicle
         return [.. _vehicles.Where(v => v != null && predicate(v))];
     }
 
-    public IEnumerator GetEnumerator() => Vehicles.GetEnumerator();
+    public IEnumerator<T> GetEnumerator()
+    {
+        foreach (var item in _vehicles)
+        {
+            if (item != null)
+            {
+                yield return item;
+            }
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     public int Count() => _length;
+
+    public GarageStatus GetStatus() => new(_capacity, _length, _amountByType);
 }

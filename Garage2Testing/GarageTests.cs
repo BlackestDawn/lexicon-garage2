@@ -14,7 +14,7 @@ public class GarageTests
         Vehicle[] expected = [ new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White") ];
         Garage<Vehicle> garage = new(10, [vehicle]);
 
-        Assert.Equal(expected, garage.Vehicles);
+        Assert.Equal(expected, [.. garage]);
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class GarageTests
         Garage<Vehicle> garage = new(5, vehicles);
 
         garage.Remove("BIKE42");
-        var result = garage.Vehicles;
+        var result = garage.ToArray();
 
         Assert.Equal(expected, result);
     }
@@ -121,5 +121,20 @@ public class GarageTests
         Garage<Vehicle> garage = new(5, vehicles);
 
         Assert.Throws<ArgumentException>(() => garage.Resize(1));
+    }
+
+    [Fact]
+    public void Garage_IEnumerableToArray_Converion()
+    {
+        Vehicle[] vehicles = [
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), "Black"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
+        ];
+        Garage<Vehicle> garage = new(5, vehicles);
+
+        var result = garage.ToArray();
+
+        Assert.Equal(vehicles, result);
     }
 }

@@ -6,15 +6,11 @@ namespace Garage2.Models.Interfaces;
 public interface IUI
 {
     public MainMenuOptions MainMenuWindow();
-    public Vehicle VehicleListSelectionWindow(Vehicle[] vehicles);
-    public string RemoveVehicleWindow(string[] licenceNumbers);
-    public Vehicle AddVehicleWindow();
-    public void PauseDisplay(string message = "Press any key to continue");
-    public void ResetMenuPath();
+    public Vehicle VehicleListSelectionWindow(IEnumerable<Vehicle> vehicles);
+    public string RemoveVehicleWindow(IEnumerable<string> licenceNumbers);
+    public Vehicle? AddVehicleWindow(IEnumerable<string> existingLicences);
     public void VehicleDetailsWindow(Vehicle vehicle);
-    public void ErrorMessage(string message);
-    public void WarningMessage(string message);
-    public void SuccessMessage(string message);
+    public void Message(string content, MessageTypes type = MessageTypes.Standard);
     public Func<Vehicle, bool>? SearchInputWindow();
-    public void SearchResultWindow(Vehicle[] vehicles);
+    public void SearchResultWindow(IEnumerable<Vehicle> vehicles);
 }

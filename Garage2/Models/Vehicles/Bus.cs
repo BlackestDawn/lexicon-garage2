@@ -9,6 +9,10 @@ public class Bus(VehicleTypes vehicleType, string licenceNumber, int passangerCa
     : WheeledVehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
     private readonly int _passengerCapacity = passangerCapacity;
+    public int PassengerCapacity
+    {
+        get => _passengerCapacity;
+    }
 
   public override string FullDescription()
     {

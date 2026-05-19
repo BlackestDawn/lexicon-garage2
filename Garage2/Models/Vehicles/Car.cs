@@ -9,7 +9,15 @@ public class Car(VehicleTypes vehicleType, string licenceNumber, CarTypes carTyp
     : WheeledVehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
     private readonly CarTypes _carType = carType;
+    public CarTypes CarType
+    {
+        get => _carType;
+    }
     private readonly int _maxSpeed = maxSpeed;
+    public int MaxSpeed
+    {
+        get => _maxSpeed;
+    }
 
   public override string FullDescription()
     {

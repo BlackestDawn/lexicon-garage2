@@ -12,18 +12,18 @@ namespace Garage2.Services;
 
 public class ConsoleUI: IUI
 {
-    private readonly Func<Hashtable> _usageStatus;
+    private readonly IStatusProvider _usageStatus;
     private readonly Stack _menuPath = new(5);
-    private readonly Color[] _typesColor =
-    [
-        Color.Magenta,
-        Color.LightGreen,
-        Color.Cyan,
-        Color.DarkBlue,
-        Color.LightPink4
-    ];
+    private readonly Dictionary<VehicleTypes, Color> _typesColor = new()
+    {
+        { VehicleTypes.Car, Color.Magenta },
+        { VehicleTypes.Bus, Color.LightGreen },
+        { VehicleTypes.Motorcycle, Color.Cyan },
+        { VehicleTypes.Boat, Color.DarkBlue },
+        { VehicleTypes.Airplane, Color.LightPink4 }
+    };
 
-    public ConsoleUI(Func<Hashtable> getStatus)
+    public ConsoleUI(IStatusProvider getStatus)
     {
         _usageStatus = getStatus;
         _menuPath.Push("Main Menu");
@@ -35,7 +35,7 @@ public class ConsoleUI: IUI
         int depthCounter = _menuPath.Count;
         foreach (string item in _menuPath)
         {
-            menuPathSB.PrependLine($"{new String(' ', 2 * depthCounter)}{item}");
+            menuPathSB.PrependLine($"{new string(' ', 2 * depthCounter)}{item}");
             depthCounter--;
         }
 
@@ -45,13 +45,13 @@ public class ConsoleUI: IUI
             .NoBorder()
             .Padding(0, 2);
 
-        Hashtable currentStatus = _usageStatus();
+        var currentStatus = _usageStatus.GetStatus();
 
         Panel usagePanel = new Panel(
             new BreakdownChart()
                 .Width(20)
-                .AddItem("Used:", (int)currentStatus["used"], Color.Red3)
-                .AddItem("Free:", (int)currentStatus["total"] - (int)currentStatus["used"], Color.LightYellow3)
+                .AddItem("Used:", currentStatus.Used, Color.Red3)
+                .AddItem("Free:", currentStatus.Capacity - currentStatus.Used, Color.LightYellow3)
             )
             .Header("Space usage")
             .NoBorder()
@@ -59,9 +59,9 @@ public class ConsoleUI: IUI
 
         BreakdownChartItem[] typesBreakdown = new BreakdownChartItem[Enum.GetNames<VehicleTypes>().Length];
 
-        foreach (DictionaryEntry item in (Hashtable)currentStatus["types"])
+        foreach (var item in currentStatus.TypesCount)
         {
-            typesBreakdown[(int)item.Key] = new BreakdownChartItem($"{item.Key}", (int)item.Value, _typesColor[(int)item.Key]);
+            typesBreakdown[(int)item.Key] = new BreakdownChartItem($"{item.Key}", currentStatus.TypesCount[item.Key], _typesColor[item.Key]);
         }
 
         Panel typesPanel = new Panel(
@@ -94,7 +94,7 @@ public class ConsoleUI: IUI
 
     public void PauseDisplay(string message = "Press any key to continue")
     {
-        AnsiConsole.MarkupLine($"\n[gray]{message}[/]");
+        AnsiConsole.MarkupLine($"[gray]\n{message}[/]");
         Console.ReadKey(intercept: true);
     }
 
@@ -114,7 +114,7 @@ public class ConsoleUI: IUI
         );
     }
 
-    public Vehicle VehicleListSelectionWindow(Vehicle[] vehicles)
+    public Vehicle VehicleListSelectionWindow(IEnumerable<Vehicle> vehicles)
     {
         _menuPath.Push("Vehicle list");
         RenderHeader();
@@ -126,7 +126,7 @@ public class ConsoleUI: IUI
         );
     }
 
-    public string RemoveVehicleWindow(string[] licenceNumbers)
+    public string RemoveVehicleWindow(IEnumerable<string> licenceNumbers)
     {
         _menuPath.Push("Releasing vehicle");
         RenderHeader();
@@ -139,69 +139,65 @@ public class ConsoleUI: IUI
         return licenceNumber;
     }
 
-    public Vehicle AddVehicleWindow()
+    public Vehicle? AddVehicleWindow(IEnumerable<string> existingLicenses)
     {
         _menuPath.Push("Adding vehicle");
         RenderHeader();
 
-        VehicleTypes vehicleType = AskForVehicleType();
-        Vehicle newVehicle;
+        string newLicense;
 
-        switch (vehicleType)
+        newLicense = AskForLicenceNumber();
+        if (existingLicenses.Any(v => v.Equals(newLicense, StringComparison.OrdinalIgnoreCase)))
         {
-            case VehicleTypes.Car:
-                newVehicle = new Car(
-                    vehicleType,
-                    AskForLicenceNumber(),
-                    AskForCarType(),
-                    AskForMaxSpeed(),
-                    AskForEngine(),
-                    AskForWheelCount(),
-                    AskForColor()
-                );
-                break;
-            case VehicleTypes.Bus:
-                newVehicle = new Bus(
-                    vehicleType,
-                    AskForLicenceNumber(),
-                    AskForPassengerCount(),
-                    AskForEngine(),
-                    AskForWheelCount(),
-                    AskForColor()
-                );
-                break;
-            case VehicleTypes.Motorcycle:
-                newVehicle = new Motorcycle(
-                    vehicleType,
-                    AskForLicenceNumber(),
-                    AskForMaxSpeed(),
-                    AskForEngine(),
-                    AskForWheelCount(),
-                    AskForColor()
-                );
-                break;
-            case VehicleTypes.Boat:
-                newVehicle = new Boat(
-                    vehicleType,
-                    AskForLicenceNumber(),
-                    AskForEngineCount(),
-                    AskForEngine(),
-                    AskForColor()
-                );
-                break;
-            case VehicleTypes.Airplane:
-                newVehicle = new Airplane(
-                    vehicleType,
-                    AskForLicenceNumber(),
-                    AskForEngineCount(),
-                    AskForEngine(),
-                    AskForWheelCount(),
-                    AskForColor()
-                );
-                break;
-            default:
-                throw new ArgumentException($"Unknown vehicle type: {vehicleType}");
+            Message($"Vehicle with licence {newLicense} already exists");
+            return null;
         }
+
+        VehicleTypes vehicleType = AskForVehicleType();
+        Vehicle newVehicle = vehicleType switch
+        {
+            VehicleTypes.Car => new Car(
+                                vehicleType,
+                                newLicense,
+                                AskForCarType(),
+                                AskForMaxSpeed(),
+                                AskForEngine(),
+                                AskForWheelCount(),
+                                AskForColor()
+                            ),
+            VehicleTypes.Bus => new Bus(
+                                vehicleType,
+                                newLicense,
+                                AskForPassengerCount(),
+                                AskForEngine(),
+                                AskForWheelCount(),
+                                AskForColor()
+                            ),
+            VehicleTypes.Motorcycle => new Motorcycle(
+                                vehicleType,
+                                newLicense,
+                                AskForMaxSpeed(),
+                                AskForEngine(),
+                                AskForWheelCount(),
+                                AskForColor()
+                            ),
+            VehicleTypes.Boat => new Boat(
+                                vehicleType,
+                                newLicense,
+                                AskForEngineCount(),
+                                AskForEngine(),
+                                AskForColor()
+                            ),
+            VehicleTypes.Airplane => new Airplane(
+                                vehicleType,
+                                newLicense,
+                                AskForEngineCount(),
+                                AskForEngine(),
+                                AskForWheelCount(),
+                                AskForColor()
+                            ),
+            _ => throw new ArgumentException($"Unknown vehicle type: {vehicleType}"),
+        };
 
         _menuPath.Pop();
         return newVehicle;
@@ -221,6 +217,14 @@ public class ConsoleUI: IUI
         return AnsiConsole.Prompt(
             new TextPrompt<string>("Enter licence number:")
                 .Validate(input => input.Length >= 6, "Must be at least 6 characters")
+            ).ToUpper();
+    }
+
+    private string AskForPartialLicenceNumber()
+    {
+        return AnsiConsole.Prompt(
+            new TextPrompt<string>("Enter licence number:")
+                .Validate(input => input.Length >= 1, "Must be at least 1 character")
             );
     }
 
@@ -342,23 +346,23 @@ public class ConsoleUI: IUI
         RenderHeader();
 
         AnsiConsole.MarkupLine(vehicle.FullDescription());
-    }
 
-    public void ErrorMessage(string message)
-    {
-        AnsiConsole.MarkupLine($"[red]Something went wrong:{Environment.NewLine}{message}[/]");
+        _menuPath.Pop();
+        _menuPath.Pop();
         PauseDisplay();
     }
 
-    public void SuccessMessage(string message)
+    public void Message(string content, MessageTypes type = MessageTypes.Standard)
     {
-        AnsiConsole.MarkupLine($"[green]{message}[/]");
-        PauseDisplay();
-    }
-
-    public void WarningMessage(string message)
-    {
-        AnsiConsole.MarkupLine($"[yellow]{message}[/]");
+        string color = type switch
+        {
+            MessageTypes.Info => "gray",
+            MessageTypes.Success => "green",
+            MessageTypes.Warning => "yellow",
+            MessageTypes.Error => "red",
+            _ => "white",
+        };
+        AnsiConsole.MarkupLine($"{Environment.NewLine}[{color}]{content}[/]");
         PauseDisplay();
     }
 
@@ -375,7 +379,11 @@ public class ConsoleUI: IUI
                     "Vehicle type",
                     "Color",
                     "Wheel count",
-                    "Max effect (HP)"
+                    "Max effect (HP)",
+                    "Max speed",
+                    "Car type",
+                    "Engine count",
+                    "Passenger capacity"
                 ])
             );
 
@@ -383,7 +391,7 @@ public class ConsoleUI: IUI
 
         if (fields.Contains("Licence number"))
         {
-            string value = AskForLicenceNumber();
+            string value = AskForPartialLicenceNumber();
             predicates.Add(v => v.LicenceNumber.Contains(value, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -393,11 +401,11 @@ public class ConsoleUI: IUI
             predicates.Add(v => v.VehicleType == value);
         }
 
-/*         if (fields.Contains("Wheel count"))
+        if (fields.Contains("Wheel count"))
         {
             int value = AskForWheelCount();
-            predicates.Add(v => v.WheelCount == value);
-        } */
+            predicates.Add(v => v is WheeledVehicle wv && wv.WheelCount == value);
+        }
 
         if (fields.Contains("Color"))
         {
@@ -411,6 +419,36 @@ public class ConsoleUI: IUI
             predicates.Add(v => v.Engine.MaxPowerHP == value);
         }
 
+        if (fields.Contains("Max speed"))
+        {
+            int value = AskForMaxSpeed();
+            predicates.Add(v =>
+                (v is Car car && car.MaxSpeed == value) ||
+                (v is Motorcycle motorcycle && motorcycle.MaxSpeed == value)
+            );
+        }
+
+        if (fields.Contains("Car type"))
+        {
+            CarTypes value = AskForCarType();
+            predicates.Add(v => v is Car car && car.CarType == value);
+        }
+
+        if (fields.Contains("Engine count"))
+        {
+            int value = AskForEngineCount();
+            predicates.Add(v =>
+                (v is Airplane airplane && airplane.EngineCount == value) ||
+                (v is Boat boat && boat.EngineCount == value)
+            );
+        }
+
+        if (fields.Contains("Passenger capacity"))
+        {
+            int value = AskForPassengerCount();
+            predicates.Add(v => v is Bus bus && bus.PassengerCapacity == value);
+        }
+
         _menuPath.Pop();
 
         if (predicates.Count() == 0)
@@ -420,27 +458,55 @@ public class ConsoleUI: IUI
         return v => predicates.All(p => p(v));
     }
 
-    public void SearchResultWindow(Vehicle[] vehicles)
+    public void SearchResultWindow(IEnumerable<Vehicle> vehicles)
     {
         _menuPath.Push("Search result");
         RenderHeader();
 
-        Table table = new();
-        table.AddColumns("Licence number", "type", "Engine", "Wheels", "Color");
+        var list = vehicles.ToList();
 
-        foreach (var item in vehicles)
+        // Detekt and build dynamic columns
+        bool hasWheels = list.Any(v => v is WheeledVehicle);
+        bool hasCarType = list.Any(v => v is Car);
+        bool hasMaxSpeed = list.Any(v => v is Car || v is Motorcycle);
+        bool hasEngineCount = list.Any(v => v is Airplane || v is Boat);
+        bool hasPassengers = list.Any(v => v is Bus);
+
+        var columns = new List<string> {"Licence number", "Vehicle type", "Engine", "Color"};
+        if (hasWheels) columns.Add("Wheels");
+        if (hasCarType) columns.Add("Car type");
+        if (hasMaxSpeed) columns.Add("Max speed");
+        if (hasEngineCount) columns.Add("Engine count");
+        if (hasPassengers) columns.Add("Passenger capacity");
+
+        // Build table
+        Table table = new();
+        table.AddColumns(columns.ToArray());
+
+        foreach (var item in list)
         {
-            table.AddRow(
+            var row = new List<string>
+            {
                 item.LicenceNumber,
                 item.VehicleType.ToString(),
                 item.Engine.Description,
-                // item.WheelCount.ToString(),
                 item.Color
-            );
+            };
+
+            if (hasWheels) row.Add(item is WheeledVehicle v2 ? v2.WheelCount.ToString() : "-");
+            if (hasCarType) row.Add(item is Car v2 ? v2.CarType.ToString() : "-");
+            if (hasMaxSpeed) row.Add(item is Car v2 ? v2.WheelCount.ToString() :
+                                    item is Motorcycle v3 ? v3.MaxSpeed.ToString() : "-");
+            if (hasEngineCount) row.Add(item is Airplane v2 ? v2.EngineCount.ToString() :
+                                    item is Boat v3 ? v3.EngineCount.ToString() : "-");
+            if (hasPassengers) row.Add(item is Bus v2 ? v2.PassengerCapacity.ToString() : "-");
+
+            table.AddRow(row.ToArray());
         }
 
-        _menuPath.Pop();
-
         AnsiConsole.Write(table);
+
+        _menuPath.Pop();
+        PauseDisplay();
     }
 }
