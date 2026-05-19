@@ -375,7 +375,7 @@ public class ConsoleUI: IUI
             MessageTypes.Error => "red",
             _ => "white",
         };
-        AnsiConsole.MarkupLine($"[{color}]{content}[/]");
+        AnsiConsole.MarkupLine($"{Environment.NewLine}[{color}]{content}[/]");
         PauseDisplay();
     }
 
