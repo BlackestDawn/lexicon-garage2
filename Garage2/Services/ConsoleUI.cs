@@ -96,7 +96,7 @@ public class ConsoleUI: IUI
 
     public void PauseDisplay(string message = "Press any key to continue")
     {
-        Message($"\n{message}", MessageTypes.Info);
+        AnsiConsole.MarkupLine($"[gray]\n{message}[/]");
         Console.ReadKey(intercept: true);
     }
 
