@@ -48,7 +48,7 @@ public class ManagementApp
                         if (_garage.Length < _garage.Capacity)
                         {
                             Vehicle vehicle = _ui.AddVehicleWindow();
-                            if (!_garage.Vehicles.Any(v => v.LicenceNumber == vehicle.LicenceNumber))
+                            if (!_garage.Any(v => v.LicenceNumber == vehicle.LicenceNumber))
                             {
                                 _garage.Add(vehicle);
                                 _ui.Message($"Vehicle '{vehicle.MinimalDescription()}' added.", MessageTypes.Success);
@@ -65,7 +65,7 @@ public class ManagementApp
                         _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Remove:
-                        string[] licenses = _garage.Vehicles.Select(v => v.LicenceNumber).ToArray();
+                        string[] licenses = _garage.Select(v => v.LicenceNumber).ToArray();
                         if (licenses.Length > 0)
                         {
                             string licence = _ui.RemoveVehicleWindow(licenses);
@@ -82,7 +82,7 @@ public class ManagementApp
                         var searchParams = _ui.SearchInputWindow();
                         if (searchParams != null)
                         {
-                            Vehicle[] result = _garage.Vehicles.Where(searchParams).ToArray();
+                            Vehicle[] result = _garage.Where(searchParams).ToArray();
                             if (result.Length > 0)
                             {
                                 _ui.SearchResultWindow(result);

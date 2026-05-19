@@ -4,7 +4,7 @@ using Garage2.Models.Vehicles;
 
 namespace Garage2.Models.Collections;
 
-public class Garage<T> : IEnumerable where T: Vehicle
+public class Garage<T> : IEnumerable<T> where T: Vehicle
 {
     private int _capacity;
     public int Capacity
@@ -114,6 +114,17 @@ public class Garage<T> : IEnumerable where T: Vehicle
         return [.. _vehicles.Where(v => v != null && predicate(v))];
     }
 
-    public IEnumerator GetEnumerator() => Vehicles.GetEnumerator();
+    public IEnumerator<T> GetEnumerator()
+    {
+        foreach (var item in _vehicles)
+        {
+            if (item != null)
+            {
+                yield return item;
+            }
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     public int Count() => _length;
 }
