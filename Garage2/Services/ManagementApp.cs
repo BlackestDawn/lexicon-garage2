@@ -44,15 +44,11 @@ public class ManagementApp
                     case MainMenuOptions.Add:
                         if (_garage.Length < _garage.Capacity)
                         {
-                            Vehicle vehicle = _ui.AddVehicleWindow();
-                            if (!_garage.Any(v => v.LicenceNumber == vehicle.LicenceNumber))
+                            var vehicle = _ui.AddVehicleWindow(_garage.Select(v => v.LicenceNumber));
+                            if (vehicle != null)
                             {
                                 _garage.Add(vehicle);
                                 _ui.Message($"Vehicle '{vehicle.MinimalDescription()}' added.", MessageTypes.Success);
-                            }
-                            else
-                            {
-                                _ui.Message($"Vehicle with licence {vehicle.LicenceNumber} already parked", MessageTypes.Warning);
                             }
                         }
                         else

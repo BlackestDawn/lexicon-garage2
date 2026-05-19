@@ -139,10 +139,19 @@ public class ConsoleUI: IUI
         return licenceNumber;
     }
 
-    public Vehicle AddVehicleWindow()
+    public Vehicle? AddVehicleWindow(IEnumerable<string> existingLicenses)
     {
         _menuPath.Push("Adding vehicle");
         RenderHeader();
+
+        string newLicense;
+
+        newLicense = AskForLicenceNumber();
+        if (existingLicenses.Any(v => v.Equals(newLicense, StringComparison.OrdinalIgnoreCase)))
+        {
+            Message($"Vehicle with licence {newLicense} already exists");
+            return null;
+        }
 
         VehicleTypes vehicleType = AskForVehicleType();
         Vehicle newVehicle;
@@ -152,7 +161,7 @@ public class ConsoleUI: IUI
             case VehicleTypes.Car:
                 newVehicle = new Car(
                     vehicleType,
-                    AskForLicenceNumber(),
+                    newLicense,
                     AskForCarType(),
                     AskForMaxSpeed(),
                     AskForEngine(),
@@ -163,7 +172,7 @@ public class ConsoleUI: IUI
             case VehicleTypes.Bus:
                 newVehicle = new Bus(
                     vehicleType,
-                    AskForLicenceNumber(),
+                    newLicense,
                     AskForPassengerCount(),
                     AskForEngine(),
                     AskForWheelCount(),
@@ -173,7 +182,7 @@ public class ConsoleUI: IUI
             case VehicleTypes.Motorcycle:
                 newVehicle = new Motorcycle(
                     vehicleType,
-                    AskForLicenceNumber(),
+                    newLicense,
                     AskForMaxSpeed(),
                     AskForEngine(),
                     AskForWheelCount(),
@@ -183,7 +192,7 @@ public class ConsoleUI: IUI
             case VehicleTypes.Boat:
                 newVehicle = new Boat(
                     vehicleType,
-                    AskForLicenceNumber(),
+                    newLicense,
                     AskForEngineCount(),
                     AskForEngine(),
                     AskForColor()
@@ -192,7 +201,7 @@ public class ConsoleUI: IUI
             case VehicleTypes.Airplane:
                 newVehicle = new Airplane(
                     vehicleType,
-                    AskForLicenceNumber(),
+                    newLicense,
                     AskForEngineCount(),
                     AskForEngine(),
                     AskForWheelCount(),
@@ -221,7 +230,7 @@ public class ConsoleUI: IUI
         return AnsiConsole.Prompt(
             new TextPrompt<string>("Enter licence number:")
                 .Validate(input => input.Length >= 6, "Must be at least 6 characters")
-            );
+            ).ToUpper();
     }
 
     private string AskForPartialLicenceNumber()
