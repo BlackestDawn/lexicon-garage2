@@ -14,14 +14,14 @@ public class ConsoleUI: IUI
 {
     private readonly IStatusProvider _usageStatus;
     private readonly Stack _menuPath = new(5);
-    private readonly Color[] _typesColor =
-    [
-        Color.Magenta,
-        Color.LightGreen,
-        Color.Cyan,
-        Color.DarkBlue,
-        Color.LightPink4
-    ];
+    private readonly Dictionary<VehicleTypes, Color> _typesColor = new Dictionary<VehicleTypes, Color>
+    {
+        { VehicleTypes.Car, Color.Magenta },
+        { VehicleTypes.Bus, Color.LightGreen },
+        { VehicleTypes.Motorcycle, Color.Cyan },
+        { VehicleTypes.Boat, Color.DarkBlue },
+        { VehicleTypes.Airplane, Color.LightPink4 }
+    };
 
     public ConsoleUI(IStatusProvider getStatus)
     {
@@ -61,7 +61,7 @@ public class ConsoleUI: IUI
 
         foreach (var item in currentStatus.TypesCount)
         {
-            typesBreakdown[(int)item.Key] = new BreakdownChartItem($"{item.Key}", currentStatus.TypesCount[item.Key], _typesColor[(int)item.Key]);
+            typesBreakdown[(int)item.Key] = new BreakdownChartItem($"{item.Key}", currentStatus.TypesCount[item.Key], _typesColor[item.Key]);
         }
 
         Panel typesPanel = new Panel(
