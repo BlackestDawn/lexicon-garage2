@@ -383,7 +383,11 @@ public class ConsoleUI: IUI
                     "Vehicle type",
                     "Color",
                     "Wheel count",
-                    "Max effect (HP)"
+                    "Max effect (HP)",
+                    "Max speed",
+                    "Car type",
+                    "Engine count",
+                    "Passenger capacity"
                 ])
             );
 
@@ -401,11 +405,11 @@ public class ConsoleUI: IUI
             predicates.Add(v => v.VehicleType == value);
         }
 
-/*         if (fields.Contains("Wheel count"))
+        if (fields.Contains("Wheel count"))
         {
             int value = AskForWheelCount();
-            predicates.Add(v => v.WheelCount == value);
-        } */
+            predicates.Add(v => v is WheeledVehicle wv && wv.WheelCount == value);
+        }
 
         if (fields.Contains("Color"))
         {
@@ -417,6 +421,36 @@ public class ConsoleUI: IUI
         {
             int value = AskForEngineHP();
             predicates.Add(v => v.Engine.MaxPowerHP == value);
+        }
+
+        if (fields.Contains("Max speed"))
+        {
+            int value = AskForMaxSpeed();
+            predicates.Add(v =>
+                (v is Car car && car.MaxSpeed == value) ||
+                (v is Motorcycle motorcycle && motorcycle.MaxSpeed == value)
+            );
+        }
+
+        if (fields.Contains("Car type"))
+        {
+            CarTypes value = AskForCarType();
+            predicates.Add(v => v is Car car && car.CarType == value);
+        }
+
+        if (fields.Contains("Engine count"))
+        {
+            int value = AskForEngineCount();
+            predicates.Add(v =>
+                (v is Airplane airplane && airplane.EngineCount == value) ||
+                (v is Boat boat && boat.EngineCount == value)
+            );
+        }
+
+        if (fields.Contains("Passenger capacity"))
+        {
+            int value = AskForPassengerCount();
+            predicates.Add(v => v is Bus bus && bus.PassengerCapacity == value);
         }
 
         _menuPath.Pop();
@@ -442,7 +476,7 @@ public class ConsoleUI: IUI
                 item.LicenceNumber,
                 item.VehicleType.ToString(),
                 item.Engine.Description,
-                // item.WheelCount.ToString(),
+                "", // item.WheelCount.ToString(),
                 item.Color
             );
         }

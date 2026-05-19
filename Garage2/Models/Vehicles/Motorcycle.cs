@@ -9,6 +9,10 @@ public class Motorcycle(VehicleTypes vehicleType, string licenceNumber, int maxS
     : WheeledVehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
     private readonly int _maxSpeed = maxSpeed;
+    public int MaxSpeed
+    {
+        get => _maxSpeed;
+    }
 
   public override string FullDescription()
     {

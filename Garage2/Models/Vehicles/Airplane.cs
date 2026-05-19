@@ -9,6 +9,10 @@ public class Airplane(VehicleTypes vehicleType, string licenceNumber, int engine
     : WheeledVehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
     private readonly int _engineCount = engineCount;
+    public int EngineCount
+    {
+        get => _engineCount;
+    }
 
   public override string FullDescription()
     {

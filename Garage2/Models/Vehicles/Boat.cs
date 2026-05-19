@@ -9,6 +9,10 @@ public class Boat(VehicleTypes vehicleType, string licenceNumber, int engineCoun
     : Vehicle(vehicleType, licenceNumber, engine, color)
 {
     private readonly int _engineCount = engineCount;
+    public int EngineCount
+    {
+        get => _engineCount;
+    }
 
   public override string FullDescription()
     {
