@@ -14,7 +14,7 @@ public class ConsoleUI: IUI
 {
     private readonly IStatusProvider _usageStatus;
     private readonly Stack _menuPath = new(5);
-    private readonly Dictionary<VehicleTypes, Color> _typesColor = new Dictionary<VehicleTypes, Color>
+    private readonly Dictionary<VehicleTypes, Color> _typesColor = new()
     {
         { VehicleTypes.Car, Color.Magenta },
         { VehicleTypes.Bus, Color.LightGreen },
@@ -35,7 +35,7 @@ public class ConsoleUI: IUI
         int depthCounter = _menuPath.Count;
         foreach (string item in _menuPath)
         {
-            menuPathSB.PrependLine($"{new String(' ', 2 * depthCounter)}{item}");
+            menuPathSB.PrependLine($"{new string(' ', 2 * depthCounter)}{item}");
             depthCounter--;
         }
 
