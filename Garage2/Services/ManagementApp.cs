@@ -77,7 +77,7 @@ public class ManagementApp
                         if (searchParams != null)
                         {
                             var result = _garage.Where(searchParams);
-                            if (result != null)
+                            if (result.Any())
                             {
                                 _ui.SearchResultWindow(result);
                             }
