@@ -61,7 +61,7 @@ public class ManagementApp
                         {
                             string licence = _ui.RemoveVehicleWindow(_garage.Select(v => v.LicenceNumber));
                             _garage.Remove(licence);
-                            _ui.Message($"Vechile with licence number '{licence}' removed.", MessageTypes.Warning);
+                            _ui.Message($"Vehicle with licence number '{licence}' removed.", MessageTypes.Warning);
                         }
                         else
                         {
