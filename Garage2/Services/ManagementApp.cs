@@ -32,10 +32,9 @@ public class ManagementApp
                         AnsiConsole.MarkupLine("Exiting");
                         break;
                     case MainMenuOptions.List:
-                        Vehicle[] vehicles = _garage.Vehicles;
-                        if (vehicles.Length > 0)
+                        if (_garage.Length > 0)
                         {
-                            _ui.VehicleDetailsWindow(_ui.VehicleListSelectionWindow(vehicles));
+                            _ui.VehicleDetailsWindow(_ui.VehicleListSelectionWindow(_garage));
                         }
                         else
                         {
@@ -65,10 +64,9 @@ public class ManagementApp
                         _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Remove:
-                        string[] licenses = _garage.Select(v => v.LicenceNumber).ToArray();
-                        if (licenses.Length > 0)
+                        if (_garage.Length > 0)
                         {
-                            string licence = _ui.RemoveVehicleWindow(licenses);
+                            string licence = _ui.RemoveVehicleWindow(_garage.Select(v => v.LicenceNumber));
                             _garage.Remove(licence);
                             _ui.Message($"Vechile with licence number '{licence}' removed.", MessageTypes.Warning);
                         }
@@ -82,8 +80,8 @@ public class ManagementApp
                         var searchParams = _ui.SearchInputWindow();
                         if (searchParams != null)
                         {
-                            Vehicle[] result = _garage.Where(searchParams).ToArray();
-                            if (result.Length > 0)
+                            var result = _garage.Where(searchParams);
+                            if (result != null)
                             {
                                 _ui.SearchResultWindow(result);
                                 _ui.PauseDisplay();

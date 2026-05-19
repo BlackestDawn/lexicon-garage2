@@ -116,7 +116,7 @@ public class ConsoleUI: IUI
         );
     }
 
-    public Vehicle VehicleListSelectionWindow(Vehicle[] vehicles)
+    public Vehicle VehicleListSelectionWindow(IEnumerable<Vehicle> vehicles)
     {
         _menuPath.Push("Vehicle list");
         RenderHeader();
@@ -128,7 +128,7 @@ public class ConsoleUI: IUI
         );
     }
 
-    public string RemoveVehicleWindow(string[] licenceNumbers)
+    public string RemoveVehicleWindow(IEnumerable<string> licenceNumbers)
     {
         _menuPath.Push("Releasing vehicle");
         RenderHeader();
@@ -418,7 +418,7 @@ public class ConsoleUI: IUI
         return v => predicates.All(p => p(v));
     }
 
-    public void SearchResultWindow(Vehicle[] vehicles)
+    public void SearchResultWindow(IEnumerable<Vehicle> vehicles)
     {
         _menuPath.Push("Search result");
         RenderHeader();
