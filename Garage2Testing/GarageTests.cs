@@ -1,4 +1,5 @@
-﻿using Garage2.Models;
+﻿using Garage2.Errors;
+using Garage2.Models;
 using Garage2.Models.Collections;
 using Garage2.Models.Enums;
 using Garage2.Models.Vehicles;
@@ -22,16 +23,16 @@ public class GarageTests
     }
 
     [Fact]
-    public void InitializeGarage_WithTooMuchData_ThrowsArgumentOutOfRangeException()
+    public void InitializeGarage_WithTooMuchData_ThrowsDatasetTooLargeException()
     {
         Vehicle[] vehicles = [
             new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
             new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), "Blue"),
             new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
-        Garage<Vehicle> garage = new(1);
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => new Garage<Vehicle>(1, vehicles));
+        var ex = Assert.Throws<DatasetTooLargeException>(() => new Garage<Vehicle>(1, vehicles));
+        Assert.Equal("Dataset too large: 3. Max size: 1", ex.Message);
     }
 
     [Fact]
