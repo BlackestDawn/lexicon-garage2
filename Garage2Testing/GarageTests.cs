@@ -36,7 +36,7 @@ public class GarageTests
     }
 
     [Fact]
-    public void Garage_RemovingVehicle()
+    public void RemovingVehicle_ReducesAmounts()
     {
         Vehicle[] vehicles = [
             new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
@@ -47,12 +47,17 @@ public class GarageTests
             new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
             new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange"),
         ];
+
         Garage<Vehicle> garage = new(5, vehicles);
 
         garage.Remove("BIKE42");
         var result = garage.ToArray();
 
         Assert.Equal(expected, result);
+        Assert.Equal(2, garage.Length);
+        Assert.Equal(0, garage.TypesCount[VehicleTypes.Motorcycle]);
+        Assert.Equal(1, garage.TypesCount[VehicleTypes.Car]);
+        Assert.Equal(1, garage.TypesCount[VehicleTypes.Bus]);
     }
 
     [Fact]
@@ -99,20 +104,6 @@ public class GarageTests
         Garage<Vehicle> garage = new(5, vehicles);
 
         Assert.Equal(3, garage.TypesCount[VehicleTypes.Car]);
-    }
-
-    [Fact]
-    public void Garage_Removing_DecreasesAmountByType()
-    {
-        Vehicle[] vehicles = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
-            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), "Black"),
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
-        ];
-        Garage<Vehicle> garage = new(5, vehicles);
-        garage.Remove("XYZ789");
-
-        Assert.Equal(2, garage.TypesCount[VehicleTypes.Car]);
     }
 
     [Fact]
