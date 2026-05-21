@@ -61,7 +61,7 @@ public class GarageTests
     }
 
     [Fact]
-    public void Garage_AddingWhenFull_ThrowsArgumentException()
+    public void AddingVehicle_WhenFull_ThrowsArgumentException()
     {
         Vehicle[] vehicles = [
             new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
@@ -69,7 +69,8 @@ public class GarageTests
         ];
         Garage<Vehicle> garage = new(2, vehicles);
 
-        Assert.Throws<ArgumentException>(() => garage.Add(new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange")));
+        var ex = Assert.Throws<ArgumentException>(() => garage.Add(new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), "Orange")));
+        Assert.Equal("Space is full", ex.Message);
     }
 
     [Fact]
