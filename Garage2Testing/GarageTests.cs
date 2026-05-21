@@ -103,8 +103,11 @@ public class GarageTests
     }
 
     [Fact]
-    public void Garage_IEnumerableToArray_Converion()
+    public void IncreasingGarageCapacity()
     {
-        Assert.Equal(_smallVehicleSet, _garage.ToArray());
+        _garage.Resize(20);
+
+        Assert.Equal(20, _garage.Capacity);
+        Assert.Equal(3, _garage.Length);
     }
 }
