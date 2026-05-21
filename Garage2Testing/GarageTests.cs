@@ -43,7 +43,7 @@ public class GarageTests
     [Fact]
     public void RemovingVehicle_ReducesAmounts()
     {
-        Vehicle[] expected = [ _smallVehicleSet[0], _smallVehicleSet[2]];
+        Vehicle[] expected = [_smallVehicleSet[0], _smallVehicleSet[2]];
         _garage.Remove("BIKE42");
 
         Assert.Equal(expected, _garage);

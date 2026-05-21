@@ -6,7 +6,7 @@ using Garage2.Models.Vehicles;
 
 namespace Garage2.Models.Collections;
 
-public class Garage<T> : IEnumerable<T>, IStatusProvider where T: Vehicle
+public class Garage<T> : IEnumerable<T>, IStatusProvider where T : Vehicle
 {
     private int _capacity;
     public int Capacity
