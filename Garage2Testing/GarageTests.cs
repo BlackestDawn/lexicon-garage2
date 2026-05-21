@@ -80,16 +80,16 @@ public class GarageTests
     }
 
     [Fact]
-    public void Garage_Adding_IncreasesAmountByType()
+    public void AddingVehicle_IncreasesAmounts()
     {
-        Vehicle[] vehicles = [
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
-            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), "Black"),
-            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White"),
-        ];
-        Garage<Vehicle> garage = new(5, vehicles);
+        _garage.Add(new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), "Black"));
+        _garage.Add(new(VehicleTypes.Airplane, "AIR001", new FuelEngine(260, 5.2m, FuelTypes.Avgas), "Yellow"));
 
-        Assert.Equal(3, garage.TypesCount[VehicleTypes.Car]);
+        Assert.Equal(5, _garage.Length);
+        Assert.Equal(2, _garage.TypesCount[VehicleTypes.Car]);
+        Assert.Equal(1, _garage.TypesCount[VehicleTypes.Motorcycle]);
+        Assert.Equal(1, _garage.TypesCount[VehicleTypes.Bus]);
+        Assert.Equal(1, _garage.TypesCount[VehicleTypes.Airplane]);
     }
 
     [Fact]
