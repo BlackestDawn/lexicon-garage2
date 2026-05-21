@@ -96,9 +96,10 @@ public class GarageTests
     }
 
     [Fact]
-    public void Garage_DeacreasingCapacityBelowLength_ThrowsArgumentException()
+    public void DeacreasingGarageCapacity_BelowLength_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => _garage.Resize(1));
+        var ex = Assert.Throws<ArgumentException>(() => _garage.Resize(1));
+        Assert.Equal("Cannot resize below current length", ex.Message);
     }
 
     [Fact]
