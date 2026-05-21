@@ -20,6 +20,7 @@ public class GarageTests
         Assert.Equal(1, garage.Length);
         Assert.Equal(1, garage.Count());
         Assert.Equal(10, garage.Capacity);
+        Assert.Equal(1, garage.TypesCount[VehicleTypes.Car]);
     }
 
     [Fact]
