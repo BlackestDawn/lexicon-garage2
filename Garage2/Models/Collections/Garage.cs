@@ -1,11 +1,12 @@
 using System.Collections;
+using Garage2.Errors;
 using Garage2.Models.Enums;
 using Garage2.Models.Interfaces;
 using Garage2.Models.Vehicles;
 
 namespace Garage2.Models.Collections;
 
-public class Garage<T> : IEnumerable<T>, IStatusProvider where T: Vehicle
+public class Garage<T> : IEnumerable<T>, IStatusProvider where T : Vehicle
 {
     private int _capacity;
     public int Capacity
@@ -40,7 +41,7 @@ public class Garage<T> : IEnumerable<T>, IStatusProvider where T: Vehicle
         int newCount = vehicles.Count();
         if (newCount > _capacity)
         {
-            throw new ArgumentOutOfRangeException("Vehicle count is higher than capacity");
+            throw new DatasetTooLargeException(newCount, _capacity);
         }
         for (int i = 0; i < newCount; i++)
         {
