@@ -74,11 +74,12 @@ public class GarageTests
     }
 
     [Fact]
-    public void Garage_RemovingWhenEmpty_ThrowsArgumentException()
+    public void RemovingVehicle_WhenEmpty_ThrowsArgumentException()
     {
         Garage<Vehicle> garage = new(5);
 
-        Assert.Throws<ArgumentException>(() => garage.Remove("BIKE42"));
+        var ex = Assert.Throws<ArgumentException>(() => garage.Remove("BIKE42"));
+        Assert.Equal("Space is empty", ex.Message);
     }
 
     [Fact]
