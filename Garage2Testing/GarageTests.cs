@@ -12,9 +12,13 @@ public class GarageTests
     {
         Vehicle vehicle = new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White");
         Vehicle[] expected = [ new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), "White") ];
+
         Garage<Vehicle> garage = new(10, [vehicle]);
 
         Assert.Equal(expected, [.. garage]);
+        Assert.Equal(1, garage.Length);
+        Assert.Equal(1, garage.Count());
+        Assert.Equal(10, garage.Capacity);
     }
 
     [Fact]
