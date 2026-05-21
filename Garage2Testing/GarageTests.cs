@@ -54,9 +54,10 @@ public class GarageTests
     }
 
     [Fact]
-    public void Garage_RemovingNonExistentVehicle_ThrowsArgumentException()
+    public void RemovingNonExistentVehicle_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => _garage.Remove("NOTHERE"));
+        var ex = Assert.Throws<ArgumentException>(() => _garage.Remove("NOTHERE"));
+        Assert.Equal("Vehicle with number NOTHERE not found", ex.Message);
     }
 
     [Fact]
